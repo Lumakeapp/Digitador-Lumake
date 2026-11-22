@@ -1,0 +1,32 @@
+{
+  "name": "digitador-maquina",
+  "productName": "Digitador Maquina",
+  "version": "1.0.0",
+  "description": "Aplicativo digitador de karaoke para máquina de karaokê",
+  "main": "main.js",
+  "author": "Digitador Maquina",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.digitadormaquina.app",
+    "productName": "Digitador Maquina",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*"
+    ]
+  }
+}
