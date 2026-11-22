@@ -1,0 +1,185 @@
+/* ============================================================
+   LUMAKÊ — PLANO DE FUNDO PERSONALIZADO
+
+   A foto escolhida na galeria substitui TODA a arte de fundo:
+   cor de fundo, névoa, feixes de luz, equalizador e o nome
+   LUMAKÊ. O título e a barra de pesquisa continuam por cima,
+   independentes do fundo escolhido.
+   ============================================================ */
+
+.bg-photo {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+
+    pointer-events: none;
+
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    opacity: 0;
+    transition: opacity 0.45s ease;
+}
+
+.screen.has-photo .bg-photo {
+    opacity: 1;
+}
+
+/* Véu por cima da foto: mantém o título e a barra legíveis */
+.bg-photo::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            ellipse 75% 65% at 50% 48%,
+            rgba(0, 0, 0, 0.12),
+            rgba(0, 0, 0, 0.52)
+        ),
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.38) 0%,
+            rgba(0, 0, 0, 0.28) 45%,
+            rgba(0, 0, 0, 0.62) 100%
+        );
+}
+
+/* ------------------------------------------------------------
+   COM FOTO: apaga as cores e toda a arte animada original
+   ------------------------------------------------------------ */
+
+.screen.has-photo {
+    background: #050308;
+}
+
+.screen.has-photo::before,
+.screen.has-photo::after {
+    content: none;
+    display: none;
+}
+
+.screen.has-photo .bg-aurora,
+.screen.has-photo .bg-sweep,
+.screen.has-photo .bg-equalizer {
+    display: none;
+}
+
+/* ------------------------------------------------------------
+   CONTEÚDO SEMPRE VISÍVEL SOBRE A FOTO
+   ------------------------------------------------------------ */
+
+.screen.has-photo .music-entry h1 {
+    text-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.95),
+        0 0 28px rgba(0, 0, 0, 0.85);
+}
+
+.screen.has-photo .hint {
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
+}
+
+/* A moldura roxa mantém-se por cima da foto */
+.screen.has-photo .song-result {
+    background: linear-gradient(
+        120deg,
+        rgba(86, 16, 158, 0.94) 0%,
+        rgba(140, 60, 226, 0.92) 52%,
+        rgba(86, 16, 158, 0.94) 100%
+    );
+
+    backdrop-filter: blur(6px);
+}
+
+/* ------------------------------------------------------------
+   PRÉVIA E BOTÕES NO PAINEL DE CONFIGURAÇÕES (F1)
+   ------------------------------------------------------------ */
+
+.bg-preview {
+    height: 120px;
+    margin-bottom: 12px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px dashed rgba(166, 76, 255, 0.45);
+    border-radius: 10px;
+
+    background-color: rgba(10, 5, 20, 0.6);
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+}
+
+.bg-preview span {
+    padding: 0 12px;
+
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.bg-preview.has-image {
+    border-style: solid;
+    border-color: rgba(166, 76, 255, 0.7);
+}
+
+.bg-preview.has-image span {
+    display: none;
+}
+
+.bg-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.bg-actions .btn {
+    padding: 10px 16px;
+    font-size: 14px;
+}
+
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.bg-state {
+    margin-top: 10px;
+
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------
+   ECRÃS PEQUENOS
+   ------------------------------------------------------------ */
+
+@media (max-width: 700px) {
+    .bg-preview {
+        height: 96px;
+    }
+
+    .bg-actions .btn {
+        flex: 1 1 100%;
+    }
+}
+
+/* ------------------------------------------------------------
+   MENOS ANIMAÇÕES
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+    .bg-photo {
+        transition: none;
+    }
+}

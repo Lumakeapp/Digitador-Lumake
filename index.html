@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' file: data:; media-src 'self' file:;">
+
+    <title>Lumakê</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="background.css">
+</head>
+
+<body>
+
+    <main class="screen">
+
+        <!-- ================= FOTO DE FUNDO (galeria) ================= -->
+        <div id="bg-photo" class="bg-photo" aria-hidden="true"></div>
+
+        <!-- ================= FUNDO ANIMADO: PALCO / KARAOKÊ ================= -->
+        <div class="bg-aurora" aria-hidden="true"></div>
+        <div class="bg-sweep" aria-hidden="true"></div>
+        <div class="bg-equalizer" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+        </div>
+
+        <section class="music-entry">
+
+            <h1>DIGITE O NÚMERO DA MÚSICA</h1>
+
+            <form id="song-form">
+
+                <input
+                    id="song-input"
+                    type="text"
+                    placeholder=""
+                    autocomplete="off"
+                    autofocus
+                >
+
+            </form>
+
+            <!-- ================= QUADRO DO RESULTADO ================= -->
+            <div id="song-result" class="song-result hidden" aria-live="polite">
+                <p id="song-artist" class="song-artist">—</p>
+                <p id="song-title" class="song-title">—</p>
+                <p id="song-action" class="song-action">Cantar</p>
+            </div>
+
+            <p class="hint">
+                <button id="hint-settings" class="hint-btn" type="button"
+                        aria-label="Abrir configurações (F1)">F1 — Configurações</button>
+                <span class="hint-sep">·</span>
+                ESC — Pontuação da sessão
+            </p>
+
+        </section>
+
+    </main>
+
+    <!-- ============ BOTÃO DE CONFIGURAÇÕES (mouse / toque) ============ -->
+
+    <button id="settings-open" class="settings-fab" type="button"
+            title="Configurações (F1)" aria-label="Abrir configurações">
+        <span aria-hidden="true">⚙</span>
+    </button>
+
+    <!-- ================= CONFIGURAÇÕES (F1) ================= -->
+
+    <div id="settings-modal" class="overlay hidden" role="dialog" aria-modal="true"
+         aria-labelledby="settings-title">
+
+        <div class="panel">
+
+            <div class="panel-head">
+                <h2 id="settings-title" class="panel-title">Configurações</h2>
+                <button id="settings-close" class="panel-close" type="button" title="Fechar (F1)">✕</button>
+            </div>
+
+            <div class="panel-body">
+
+                <section class="group">
+
+                    <h3>Modo de funcionamento</h3>
+
+                    <div class="field">
+                        <label for="set-mode">Modo</label>
+                        <select id="set-mode">
+                            <option value="free">Modo livre — músicas ilimitadas</option>
+                            <option value="credits">Modo crédito — limite de 10</option>
+                        </select>
+                    </div>
+
+                    <p id="mode-note" class="group-note">
+                        No modo livre todas as músicas são liberadas, sem gastar créditos.
+                    </p>
+
+                    <div id="credits-box" class="credits-box hidden">
+
+                        <p class="credits-line">
+                            Créditos disponíveis:
+                            <strong id="credits-value">10</strong> / <span id="credits-max">10</span>
+                        </p>
+
+                        <p class="group-note">
+                            Cada música consome
+                            <strong id="credits-cost">2</strong> créditos.
+                            O saldo renova automaticamente a cada
+                            <strong id="credits-period">24</strong> horas.
+                        </p>
+
+                        <p id="credits-renew" class="group-note">Próxima renovação: —</p>
+
+                    </div>
+
+                </section>
+
+                <section class="group">
+
+                    <h3>Sistema</h3>
+
+                    <label class="check">
+                        <input type="checkbox" id="set-autostart">
+                        <span>Iniciar o programa junto com o Windows</span>
+                    </label>
+
+                    <label class="check">
+                        <input type="checkbox" id="set-show-score">
+                        <span>Mostrar pontuação no final</span>
+                    </label>
+
+                    <label class="check">
+                        <input type="checkbox" id="set-fullscreen">
+                        <span>Ecrã inteiro (F11)</span>
+                    </label>
+
+                </section>
+
+                <section class="group">
+
+                    <h3>Plano de fundo</h3>
+                    <p class="group-note">
+                        A foto escolhida substitui todo o fundo — as cores e o nome LUMAKÊ.
+                        O título e a barra de pesquisa continuam sempre visíveis.
+                    </p>
+
+                    <div id="bg-preview" class="bg-preview">
+                        <span>Sem foto — fundo animado LUMAKÊ</span>
+                    </div>
+
+                    <div class="bg-actions">
+                        <button id="bg-choose" class="btn primary" type="button">Escolher foto da galeria</button>
+                        <button id="bg-remove" class="btn ghost" type="button" disabled>Remover foto</button>
+                    </div>
+
+                    <p id="bg-state" class="bg-state">Fundo animado LUMAKÊ</p>
+
+                </section>
+
+                <section class="group">
+
+                    <h3>Escala de dimensões do aplicativo</h3>
+                    <p class="group-note">Ajuste o tamanho da janela — máximo de 2080 px.</p>
+
+                    <div class="size-field">
+
+                        <div class="size-label">
+                            <span>Largura</span>
+                            <strong><span id="set-width-value">1280</span> px</strong>
+                        </div>
+
+                        <div class="size-controls">
+                            <input type="range" id="set-width-range" min="900" max="2080" step="10"
+                                   value="1280" aria-label="Largura da janela">
+                            <input type="number" id="set-width" min="900" max="2080" step="10"
+                                   value="1280" aria-label="Largura da janela em pixéis">
+                        </div>
+
+                    </div>
+
+                    <div class="size-field">
+
+                        <div class="size-label">
+                            <span>Altura</span>
+                            <strong><span id="set-height-value">800</span> px</strong>
+                        </div>
+
+                        <div class="size-controls">
+                            <input type="range" id="set-height-range" min="600" max="2080" step="10"
+                                   value="800" aria-label="Altura da janela">
+                            <input type="number" id="set-height" min="600" max="2080" step="10"
+                                   value="800" aria-label="Altura da janela em pixéis">
+                        </div>
+
+                    </div>
+
+                    <p class="group-note">
+                        Se o aplicativo estiver em ecrã inteiro, sai desse modo ao aplicar a nova dimensão.
+                    </p>
+
+                </section>
+
+            </div>
+
+            <div class="panel-actions">
+                <button id="settings-done" class="btn primary" type="button">Concluído</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= PONTUAÇÃO FINAL ================= -->
+
+    <div id="score-panel" class="overlay hidden" role="dialog" aria-modal="true"
+         aria-labelledby="score-title">
+
+        <div class="panel narrow">
+
+            <h2 id="score-title" class="panel-title">Fim da sessão</h2>
+
+            <p class="score-caption">Pontuação</p>
+            <p class="score-value" id="score-value">0</p>
+
+            <div class="score-stats">
+
+                <div class="score-stat">
+                    <span>Músicas</span>
+                    <strong id="score-songs">0</strong>
+                </div>
+
+                <div class="score-stat">
+                    <span>Créditos</span>
+                    <strong id="score-credits">—</strong>
+                </div>
+
+            </div>
+
+            <div class="panel-actions">
+                <button id="score-continue" class="btn ghost" type="button">Continuar</button>
+                <button id="score-exit" class="btn primary" type="button">Fechar aplicativo</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="renderer.js"></script>
+
+</body>
+</html>
