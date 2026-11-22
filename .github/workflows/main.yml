@@ -1,3 +1,4 @@
+
 name: Gerar Lumake Windows
 
 on:
@@ -8,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -15,7 +17,7 @@ jobs:
         with:
           node-version: 20
 
-      -- run: npm install --no-audit --no-fund
+      - run: npm install --no-audit --no-fund
 
       - run: npm run dist -- --win --ia32
 
@@ -24,3 +26,4 @@ jobs:
           name: Lumake-Windows
           path: dist/*.exe
           if-no-files-found: error
+          
